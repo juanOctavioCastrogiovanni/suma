@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <!-- CSS only -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    
+  </head>
+  <body>
+    <div style="width: 400px;">
+      <form action="/sumando" method="POST">
+        <h1>Suma visitas: </h1> 
+        <input class="form-control" type="text" name="numero">
+        <button type="submit" class="btn btn-info" style="display: inline-block;">Agregar</button>
+      </form>
+    <form action="/ver-anterior" method="GET" style="display: inline-block;">
+      <button type="submit" class="btn btn-warning" style="display: inline-block;">Ver el anterior</button>
+    </form>
+    <form action="/suma" method="GET" style="display: inline-block;">
+      <button type="submit" class="btn btn-success" style="display: inline-block;">ver Suma</button>
+    </form>
+    <%if (typeof ultimo != "undefined") {%>
+      <h1 style="margin: 10px; color:darkred"><%=ultimo%></h1>
+    <%}%>
+    <%if (typeof suma != "undefined") {%>
+      <h1 style="margin: 10px; color:darkgreen"><%=suma%></h1>
+    <%}%>
+  </div>
+  </body>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+</html>
