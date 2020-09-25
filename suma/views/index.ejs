@@ -17,6 +17,12 @@
       <input class="form-control" type="text" name="numero">
       <button type="submit" class="btn btn-info" style="display: inline-block;">Agregar</button>
     </form>
+    <form action="/inicio" method="POST" style="width: 50%;">
+      <p>record: </p>
+      <input type="numero" name="inicio">
+      <button type="submit" class="btn btn-info" style="display: inline-block;">Agregar</button>
+    </form>
+    
     <%if (typeof ultimo != "undefined") {%>
     <form action="/reset/<%=ultimo.id%>" method="GET">
       <button class="btn btn-danger" type="submit">Reset</button>
@@ -33,6 +39,9 @@
     <%}%>
     <%if (typeof suma != "undefined") {%>
     <h1 style="margin: 10px; color:darkgreen"><%=suma%></h1>
+    <%}%>
+    <%if (typeof inicio != "undefined") {%>
+      <h1 style="margin: 10px; color:darkgreen">=<%=suma%>-<%=inicio%></h1>
     <%}%>
   
   <%if(typeof tabla != 'undefined'){%>

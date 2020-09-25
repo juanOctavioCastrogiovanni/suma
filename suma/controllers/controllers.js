@@ -1,12 +1,16 @@
 let sequelize = require('sequelize')
 let Op = sequelize.Op
 let db = require('../database/models')
-
 var reset;
+var inicio;
 
 module.exports = {
     list: (req, res) => {
         res.render('index', { title: 'Express' });
+    },
+    inicio: (req, res) => {
+        inicio = req.body.inicio;
+        res.redirect('/')
     },
     verAnterior: async (req,res)=> {
 
@@ -36,7 +40,6 @@ module.exports = {
         let contador = 0;
         let array = [];
         let arrayobj= [];
-        let tabla = [];
         if(reset == undefined){
         db.Numero.findAll()
             .then(numeros => {
@@ -50,7 +53,7 @@ module.exports = {
                var suma = array.reduce((acum,num)=>{
                     return acum + num
                 })
-                res.render('index', { title: 'Express', suma: suma, tabla: arrayobj});
+                res.render('index', { title: 'Express', suma: suma, tabla: arrayobj,inicio:inicio});
             })
         } else {
             db.Numero.findAll({
@@ -71,7 +74,7 @@ module.exports = {
                var suma = array.reduce((acum,num)=>{
                     return acum + num
                 })
-                res.render('index', { title: 'Express', suma: suma, tabla: arrayobj});
+                res.render('index', { title: 'Express', suma: suma, tabla: arrayobj,inicio:inicio});
             })
         }
             

@@ -11,7 +11,11 @@ router.post('/sumando', controller.sumando);
 
 router.get('/suma', controller.suma);
 
+
+router.post('/inicio', controller.inicio);
+
 router.get('/reset/:id', controller.reset);
+
 
 
 
