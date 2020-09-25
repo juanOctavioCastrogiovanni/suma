@@ -11,6 +11,8 @@ router.post('/sumando', controller.sumando);
 
 router.get('/suma', controller.suma);
 
+router.get('/reset/:id', controller.reset);
+
 
 
 module.exports = router;
