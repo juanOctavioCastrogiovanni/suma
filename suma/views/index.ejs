@@ -38,10 +38,12 @@
     <h1 style="margin: 10px; color:darkred"><%=ultimo.numero%></h1>
     <%}%>
     <%if (typeof suma != "undefined") {%>
+    <p style="margin: 10px; color:darkgreen">Total de vistas</p>
     <h1 style="margin: 10px; color:darkgreen"><%=suma%></h1>
     <%}%>
     <%if (typeof inicio != "undefined") {%>
-      <h1 style="margin: 10px; color:darkgreen">=<%=suma%>-<%=inicio%></h1>
+      <h1 id="p1" style="margin: 10px; color:darkgreen">=<%=suma%>-<%=inicio%></h1>
+      <button onclick="copyToClipboard('#p1')" class="btn btn-success">Copiar a planilla</button>
     <%}%>
   
   <%if(typeof tabla != 'undefined'){%>
@@ -65,7 +67,17 @@
 </div>
   </body>
 
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+<script>
+  function copyToClipboard(elemento) {
+  var $temp = $("<input>")
+  $("body").append($temp);
+  $temp.val($(elemento).text()).select();
+  document.execCommand("copy");
+  $temp.remove();
+}
+</script>
 </html>
