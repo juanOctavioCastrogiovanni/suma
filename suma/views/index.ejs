@@ -34,8 +34,26 @@
     <%if (typeof suma != "undefined") {%>
     <h1 style="margin: 10px; color:darkgreen"><%=suma%></h1>
     <%}%>
-  </div>
-
+  
+  <%if(typeof tabla != 'undefined'){%>
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Videos</th>
+        <th scope="col">Visitas</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% tabla.forEach(rep=>{ %>
+      <tr>
+        <th scope="row"><%=rep.id%></th>
+        <td><%=rep.numero%></td>
+      </tr>
+      <%})%>
+    </tbody>
+  </table>
+ <%}%>
+</div>
   </body>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

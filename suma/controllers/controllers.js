@@ -32,20 +32,25 @@ module.exports = {
          res.redirect('/')
     },
     suma: (req, res) => {
+        let obj = {};
+        let contador = 0;
         let array = [];
+        let arrayobj= [];
+        let tabla = [];
         if(reset == undefined){
         db.Numero.findAll()
             .then(numeros => {
                 for(var numero of numeros){
                     // for(var num in numero){
                         array.push(numero.numero)
+                        arrayobj.push(obj={id: contador++,numero: numero.numero})
                     // }
                 }
+              arrayobj.shift()
                var suma = array.reduce((acum,num)=>{
                     return acum + num
                 })
-
-                res.render('index', { title: 'Express', suma: suma});
+                res.render('index', { title: 'Express', suma: suma, tabla: arrayobj});
             })
         } else {
             db.Numero.findAll({
@@ -59,13 +64,14 @@ module.exports = {
                 for(var numero of numeros){
                     // for(var num in numero){
                         array.push(numero.numero)
+                        arrayobj.push(obj={id: contador++,numero: numero.numero})
                     // }
                 }
+              arrayobj.shift()
                var suma = array.reduce((acum,num)=>{
                     return acum + num
                 })
-
-                res.render('index', { title: 'Express', suma: suma});
+                res.render('index', { title: 'Express', suma: suma, tabla: arrayobj});
             })
         }
             
