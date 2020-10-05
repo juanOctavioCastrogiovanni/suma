@@ -3,6 +3,10 @@ let Op = sequelize.Op
 let db = require('../database/models')
 var reset;
 var inicio;
+var total1;
+var total;
+var restantes;
+var idBorrado = [];
 
 module.exports = {
     list: (req, res) => {
@@ -10,6 +14,7 @@ module.exports = {
     },
     inicio: (req, res) => {
         inicio = req.body.inicio;
+        total1 = req.body.cantidadTotal;
         res.redirect('/')
     },
     verAnterior: async (req,res)=> {
@@ -17,11 +22,13 @@ module.exports = {
         let numeroAnterior = await db.Numero.findAll();
         let posicion = numeroAnterior.length-1;
         // res.json(numeroAnterior[posicion].numero)
-        res.render('index', { title: 'Express', ultimo: numeroAnterior[posicion]});
+        
+        res.redirect('/reset/'+ numeroAnterior[posicion].id)
     },
     sumando: (req, res) => {
         let array = [];
         let numero;
+        idBorrado.push(req.body.idBorrado)
         if(req.body.numero.indexOf('.')!=-1){
             array = req.body.numero.split('.');
             numero = array.join('');
@@ -33,27 +40,40 @@ module.exports = {
              numero: parseInt(numero)
          })
 
-         res.redirect('/')
+         res.redirect('/suma')
     },
     suma: (req, res) => {
         let obj = {};
         let contador = 0;
         let array = [];
         let arrayobj= [];
+        let ultimosTres= [];
         if(reset == undefined){
         db.Numero.findAll()
             .then(numeros => {
                 for(var numero of numeros){
                     // for(var num in numero){
                         array.push(numero.numero)
-                        arrayobj.push(obj={id: contador++,numero: numero.numero})
+                        if(numero.numero>=0){
+                            arrayobj.push(obj={id: contador++,numero: numero.numero})
+                            } else {
+                                arrayobj.push(obj={id: --contador,numero: numero.numero})
+                            }
                     // }
                 }
               arrayobj.shift()
+              ultimosTres = arrayobj.slice(-14)
+              total = arrayobj.slice(-1)[0].id
+              restantes = total1 - total
+
+
+
                var suma = array.reduce((acum,num)=>{
                     return acum + num
                 })
-                res.render('index', { title: 'Express', suma: suma, tabla: arrayobj,inicio:inicio});
+                
+                
+                res.render('index', { title: 'Express', suma: suma, tabla: ultimosTres,tablaCompletas: arrayobj ,inicio:inicio,total: total, restantes:restantes, idBorrado:idBorrado});
             })
         } else {
             db.Numero.findAll({
@@ -67,14 +87,25 @@ module.exports = {
                 for(var numero of numeros){
                     // for(var num in numero){
                         array.push(numero.numero)
+                        if(numero.numero>=0){
                         arrayobj.push(obj={id: contador++,numero: numero.numero})
+                        } else {
+                            arrayobj.push(obj={id: --contador,numero: numero.numero})
+                        }
                     // }
                 }
               arrayobj.shift()
+              ultimosTres = arrayobj.slice(-14)
+              total = arrayobj.slice(-1)[0].id
+              restantes = total1 - total
+             
+              
                var suma = array.reduce((acum,num)=>{
                     return acum + num
                 })
-                res.render('index', { title: 'Express', suma: suma, tabla: arrayobj,inicio:inicio});
+                
+                
+                res.render('index', { title: 'Express', suma: suma, tabla: ultimosTres,tablaCompletas: arrayobj ,inicio:inicio,total:total, restantes:restantes, idBorrado:idBorrado});
             })
         }
             
@@ -85,6 +116,9 @@ module.exports = {
         db.Numero.create({
             numero: 0
         })
+
+      
+        idBorrado = []
 
         res.redirect('/')
     }

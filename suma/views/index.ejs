@@ -11,59 +11,125 @@
 </head>
 
 <body>
-  <div style="width: 400px;">
-    <form action="/sumando" method="POST">
-      <h1>Suma visitas: </h1>
-      <input class="form-control" type="text" name="numero">
-      <button type="submit" class="btn btn-info" style="display: inline-block;">Agregar</button>
-    </form>
-    <form action="/inicio" method="POST" style="width: 50%;">
-      <p>record: </p>
-      <input type="numero" name="inicio">
-      <button type="submit" class="btn btn-info" style="display: inline-block;">Agregar</button>
-    </form>
-    
-    <%if (typeof ultimo != "undefined") {%>
-    <form action="/reset/<%=ultimo.id%>" method="GET">
-      <button class="btn btn-danger" type="submit">Reset</button>
-    </form>
-    <%}%>
-    <form action="/ver-anterior" method="GET" style="display: inline-block;">
-      <button type="submit" class="btn btn-warning" style="display: inline-block;">Ver el anterior</button>
-    </form>
-    <form action="/suma" method="GET" style="display: inline-block;">
-      <button type="submit" class="btn btn-success" style="display: inline-block;">ver Suma</button>
-    </form>
-    <%if (typeof ultimo != "undefined") {%>
-    <h1 style="margin: 10px; color:darkred"><%=ultimo.numero%></h1>
-    <%}%>
+  <div class="row">
+    <div class="col-6">
+      <form action="/sumando" method="POST">
+        <h1>Suma visitas: </h1>
+        <input class="form-control" type="text" name="numero">
+        <button type="submit" class="btn btn-info" style="display: inline-block;">Agregar</button>
+      </form>
+      <form action="/inicio" method="POST" style="width: 50%;">
+        <p>record: </p>
+        <span>Vistas anteriores</span>
+        <input type="number" name="inicio"><br>
+        <span>Total de videos para esta lista</span>
+        <input type="number" name="cantidadTotal" value="0">
+        <button type="submit" class="btn btn-info" style="display: inline-block;">Agregar</button>
+      </form>
+
+      <form action="/ver-anterior" method="GET" style="display: inline-block;">
+        <button type="submit" class="btn btn-danger" style="display: inline-block;">Reset</button>
+      </form>
+      <form action="/suma" method="GET" style="display: inline-block;">
+        <button type="submit" class="btn btn-success" style="display: inline-block;">ver Suma</button>
+      </form>
+      <%if (typeof ultimo != "undefined") {%>
+      <h1 style="margin: 10px; color:darkred"><%=ultimo.numero%></h1>
+      <%}%>
     <%if (typeof suma != "undefined") {%>
-    <p style="margin: 10px; color:darkgreen">Total de vistas</p>
-    <h1 style="margin: 10px; color:darkgreen"><%=suma%></h1>
-    <%}%>
+      <p style="margin: 10px; color:darkgreen">Total de vistas</p>
+      <h1 style="margin: 10px; color:darkgreen"><%=suma%></h1>
+      <p style="margin: 10px; color:darkgreen">Total de videos</p>
+      <h1 style="margin: 10px; color:darkgreen"><%=total%></h1>
+      <%}%>
+    <%if (typeof restantes != "undefined") {%>
+      <p style="margin: 10px; color:darkgreen">Restantes</p>
+      <h1 style="margin: 10px; color:darkgreen"><%=restantes%></h1>
+      <%}%>
+    
     <%if (typeof inicio != "undefined") {%>
+      <p style="margin: 10px; color:darkgreen">Formula para planilla</p>
       <h1 id="p1" style="margin: 10px; color:darkgreen">=<%=suma%>-<%=inicio%></h1>
       <button onclick="copyToClipboard('#p1')" class="btn btn-success">Copiar a planilla</button>
-    <%}%>
-  
+      <%}%>
+
+ <%if(typeof tabla != 'undefined'){%>
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Videos</th>
+            <th scope="col">Visitas</th>
+            <th scope="col">Borrar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for (let i=0;i<tablaCompletas.length;i++){ %>
+            <%for (let j=0;j<idBorrado.length;j++){%>
+            <%if(idBorrado[j]==tablaCompletas[i].id){var flag=true}}%>
+          <tr>
+            <%if (tablaCompletas[i].numero<0){%>
+            <th scope="row" style="color: red;"><%=tablaCompletas[i].id%></th>
+            <td style="color: red;"><%=tablaCompletas[i].numero%></td>
+            <%} else {%>
+            <form action="/sumando" method="POST">
+              <input type="hidden" name="numero" value="-<%=tablaCompletas[i].numero%>">
+              <input type="hidden" name="idBorrado" value="<%=tablaCompletas[i].id%>">
+              <th scope="row"><%=tablaCompletas[i].id%></th>
+              <%if (i>0&&tablaCompletas[i].numero!=tablaCompletas[i-1].numero){%>
+              <td><%=tablaCompletas[i].numero%></td>
+              <%} else {%>
+              <td style="color:darkred; background-color: rgba(0, 0, 0, .1);"><%=tablaCompletas[i].numero%></td>
+              <%}%>
+
+              <%if (flag != true) {%>
+              <td><button id="restar" type="submit" class="btn btn-danger btn-sm" style="border: 0.5px;">Restar</button></td>
+              <%} else {%>
+                <td><button class="btn btn-success btn-sm" style="border: 0.5px;">Borrado
+                  <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.236.236 0 0 1 .02-.022z"/>
+                  </svg>
+                </button></td>
+              <%}%>
+              <%flag = false%>
+            </form>
+          </td>
+            <%}%>
+      </tr>
+      <%}%>
+        </tbody>
+      </table>
+      <%}%>
+      
+</div>
+<div class="col-6">
   <%if(typeof tabla != 'undefined'){%>
-  <table class="table">
-    <thead class="thead-dark">
-      <tr>
-        <th scope="col">Videos</th>
-        <th scope="col">Visitas</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% tabla.forEach(rep=>{ %>
-      <tr>
-        <th scope="row"><%=rep.id%></th>
-        <td><%=rep.numero%></td>
-      </tr>
-      <%})%>
-    </tbody>
-  </table>
- <%}%>
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Videos</th>
+            <th scope="col">Visitas</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for (let i=0;i<tabla.length;i++){ %>
+          <tr>
+            <%if (tabla[i].numero<0){%>
+            <th scope="row" style="color: red;"><%=tabla[i].id%></th>
+            <td style="color: red;"><%=tabla[i].numero%></td>
+            <%} else {%>
+            <th scope="row"><%=tabla[i].id%></th>
+            <%if (i>0&&tabla[i].numero!=tabla[i-1].numero){%>
+              <td><%=tabla[i].numero%></td>
+              <%} else {%>
+              <td style="color:darkred; background-color: rgba(0, 0, 0, .1);"><%=tabla[i].numero%></td>
+              <%}%>
+            <%}%>
+        </tr>
+        <%}%>
+        </tbody>
+      </table>
+      <%}%>
+</div>
 </div>
   </body>
 
@@ -80,4 +146,5 @@
   $temp.remove();
 }
 </script>
+<script src="/js/boton.js"></script>
 </html>
