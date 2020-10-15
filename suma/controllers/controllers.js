@@ -33,7 +33,7 @@ module.exports = {
         if(req.body.numero.indexOf('simpleText')!=-1){
             array = req.body.numero.split('"shortViewCount":{"simpleText":"');
                     numero = parseInt(array[1])
-            res.json(numero)
+            
 
         } else if(req.body.numero.indexOf('.')!=-1){
             array = req.body.numero.split('.');
