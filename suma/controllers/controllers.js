@@ -31,14 +31,9 @@ module.exports = {
         idBorrado.push(req.body.idBorrado)
 
         if(req.body.numero.indexOf('simpleText')!=-1){
-            array = req.body.numero.split(':"');
-            
-            array.forEach(te=>{
-                if(parseInt(te)!=null){
-                    numero = parseInt(te)
-                }
-            })
-
+            array = req.body.numero.split('"shortViewCount":{"simpleText":"');
+                    numero = parseInt(array[1])
+            res.json(numero)
 
         } else if(req.body.numero.indexOf('.')!=-1){
             array = req.body.numero.split('.');
