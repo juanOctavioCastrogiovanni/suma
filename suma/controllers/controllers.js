@@ -28,14 +28,28 @@ module.exports = {
     sumando: (req, res) => {
         let array = [];
         let numero;
+        let entero;
+        let junto;
         idBorrado.push(req.body.idBorrado)
 
         if(req.body.numero.indexOf('simpleText')!=-1){
-            array = req.body.numero.split('"shortViewCount":{"simpleText":"');
-                    numero = parseInt(array[1])
-            
+            array = req.body.numero.split('"videoViewCountRenderer":{"viewCount":{"simpleText":"');
+                entero = array[1];
+                if(entero.indexOf('.')){
+                    entero=entero.split('.');
+                    
+                    if(entero.length<=1){
+                        junto=entero[0]+entero[1]
+                    } else {
+                        junto=entero[0]+entero[1]+entero[2]
+                    } 
 
-        } else if(req.body.numero.indexOf('.')!=-1){
+                    numero = parseInt(junto)
+                } else {
+                    numero = parseInt(array[1])
+                }
+            
+     } else if(req.body.numero.indexOf('.')!=-1){
             array = req.body.numero.split('.');
             numero = array.join('');
         } else {
